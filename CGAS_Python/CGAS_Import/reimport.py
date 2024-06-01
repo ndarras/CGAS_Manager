@@ -155,8 +155,8 @@ for gc in range(0, l_gait_cycles):
         if c3did != "":
             proc.save_event_data(working_dir, userid, c3did, levent_list)
             proct.save_temporospatial_data(working_dir, userid, c3did, "Left", gc, tmps_data)
-            #proc.save_graph_data(working_dir, userid, c3did, lab, importtype, l_selected_graphs,
-            #                     l_selected_refgraphs, planes, normalised_data, "Left", gc, reimport_flags)
+            proc.save_graph_data(working_dir, userid, c3did, lab, importtype, l_selected_graphs,
+                                 l_selected_refgraphs, planes, normalised_data, "Left", gc, reimport_flags)
 
 for gc in range(0, r_gait_cycles):
     if prep.get_reimport_gc_validation(reimport_flags, gc, "Right"):
@@ -169,6 +169,6 @@ for gc in range(0, r_gait_cycles):
         if c3did != "":
             proc.save_event_data(working_dir, userid, c3did, revent_list)
             proct.save_temporospatial_data(working_dir, userid, c3did, "Right", gc, tmps_data)
-            #proc.save_graph_data(working_dir, userid, c3did, lab, importtype, r_selected_graphs,
-            #                     r_selected_refgraphs, planes, normalised_data, "Right", gc, reimport_flags)
+            proc.save_graph_data(working_dir, userid, c3did, lab, importtype, r_selected_graphs,
+                                 r_selected_refgraphs, planes, normalised_data, "Right", gc, reimport_flags)
 

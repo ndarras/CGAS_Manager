@@ -49,27 +49,34 @@ def calculate_tmps(lgc, rgc, levent, revent, lts_source, rts_source, ts_event_li
     lstride_time = (float(levent.sc_frame) - float(levent.ic_frame)) / 100
     rstride_time = (float(revent.sc_frame) - float(revent.ic_frame)) / 100
 
-    #Calc Left Stride Length
-    a = float(lts_source[0][0])
-    b = int(levent.tot_frames) - 1
-    c = float(lts_source[0][b])
-    aa = (a - c) / 1000
-    lstridelenght = abs(aa)
+    if len(lts_source) > 0:
+        #Calc Left Stride Length
+        a = float(lts_source[0][0])
+        b = int(levent.tot_frames) - 1
+        c = float(lts_source[0][b])
+        aa = (a - c) / 1000
+        lstridelenght = abs(aa)
 
-    #Calc Left Walking Velocity
-    d = float((float(b) / float(100)))
-    lwalkingvelocity = abs(aa / d)
+        #Calc Left Walking Velocity
+        d = float((float(b) / float(100)))
+        lwalkingvelocity = abs(aa / d)
 
-    #Calc Right Stride Length
-    a = float(rts_source[0][0])
-    b = int(revent.tot_frames) - 1
-    c = float(rts_source[0][b])
-    aa = (a - c) / 1000
-    rstridelenght = abs(aa)
+        #Calc Right Stride Length
+        a = float(rts_source[0][0])
+        b = int(revent.tot_frames) - 1
+        c = float(rts_source[0][b])
+        aa = (a - c) / 1000
+        rstridelenght = abs(aa)
 
-    #Calc Right Walking Velocity
-    d = float((float(b) / float(100)))
-    rwalkingvelocity = abs(aa / d)
+        #Calc Right Walking Velocity
+        d = float((float(b) / float(100)))
+        rwalkingvelocity = abs(aa / d)
+    else:
+        lstridelenght = 0
+        lwalkingvelocity = 0
+        rstridelenght = 0
+        rwalkingvelocity = 0
+
 
     if levent.ic_frame > revent.ic_frame:
 
@@ -82,8 +89,11 @@ def calculate_tmps(lgc, rgc, levent, revent, lts_source, rts_source, ts_event_li
         rstride_time = abs(float(revent.sc_frame) - float(revent.ic_frame)) / 100
 
         #Calc Cadence
-        lcadence = 60 /(abs(float(levent.ic_frame) - float(revent.ic_frame)) / 100)
-        rcadence = 60 /(abs(float(revent.sc_frame) - float(levent.ic_frame)) / 100)
+        # Decided to change the calculation usign the Stride time to be compatible with Nexus calculation
+        # lcadence = 60 /(abs(float(levent.ic_frame) - float(revent.ic_frame)) / 100)
+        # rcadence = 60 /(abs(float(revent.sc_frame) - float(levent.ic_frame)) / 100)
+        lcadence = 60 / (lstride_time / 2)
+        rcadence = 60 / (rstride_time / 2)
 
         # Calc Double Support
         for h in range(0, len(ts_event_list)):
@@ -99,22 +109,28 @@ def calculate_tmps(lgc, rgc, levent, revent, lts_source, rts_source, ts_event_li
         rsinglesupport = rstride_time - (rdblsupport + ((revent.sc_frame - revent.ts_frame) / 100))
         lsinglesupport = lstride_time - (ldblsupport + ((levent.sc_frame - levent.ts_frame) / 100))
 
-        # Calc Step Length
-        a = float(rts_source[0][0]) - float(lts_source[0][0])
-        lsteplength = abs(a / 1000)
-        b = int(revent.tot_frames) - 1
-        c = float(rts_source[0][b])
-        a = float(lts_source[0][0]) - c
+        if len(rts_source) > 0:
+            # Calc Step Length
+            a = float(rts_source[0][0]) - float(lts_source[0][0])
+            lsteplength = abs(a / 1000)
+            b = int(revent.tot_frames) - 1
+            c = float(rts_source[0][b])
+            a = float(lts_source[0][0]) - c
 
-        rsteplength = abs(a / 1000)
-        # Calc Step Width
+            rsteplength = abs(a / 1000)
+            # Calc Step Width
 
-        a = float(float(rts_source[1][0]) - float(lts_source[1][0]))
-        lstepwidth = abs(a / 1000)
-        b = int(revent.tot_frames) - 1
-        c = float(rts_source[1][b])
-        a = c - float(lts_source[1][0])
-        rstepwidth = abs(a / 1000)
+            a = float(float(rts_source[1][0]) - float(lts_source[1][0]))
+            lstepwidth = abs(a / 1000)
+            b = int(revent.tot_frames) - 1
+            c = float(rts_source[1][b])
+            a = c - float(lts_source[1][0])
+            rstepwidth = abs(a / 1000)
+        else:
+            lsteplength  = 0
+            rsteplength = 0
+            lstepwidth = 0
+            rstepwidth = 0
 
     else:
 
@@ -127,8 +143,11 @@ def calculate_tmps(lgc, rgc, levent, revent, lts_source, rts_source, ts_event_li
         rstride_time = abs(float(revent.sc_frame) - float(revent.ic_frame)) / 100
 
         #Calc Cadence
-        lcadence = 60 / (abs(float(revent.ic_frame) - float(levent.ic_frame)) / 100)
-        rcadence = 60 / (abs(float(levent.sc_frame) - float(revent.sc_frame)) / 100)
+        # Decided to change the calculation usign the Stride time to be compatible with Nexus calculation
+        # lcadence = 60 / (abs(float(revent.ic_frame) - float(levent.ic_frame)) / 100)
+        # rcadence = 60 / (abs(float(levent.sc_frame) - float(revent.sc_frame)) / 100)
+        lcadence = 60 / (lstride_time / 2)
+        rcadence = 60 / (rstride_time / 2)
 
         # Calc Double Support
         rdblsupport = ((float(levent.ts_frame) - float(revent.ic_frame))) / 100
@@ -144,23 +163,27 @@ def calculate_tmps(lgc, rgc, levent, revent, lts_source, rts_source, ts_event_li
         rsinglesupport = rstride_time - (rdblsupport + ((revent.sc_frame - revent.ts_frame) / 100))
         lsinglesupport = lstride_time - (ldblsupport + ((levent.sc_frame - levent.ts_frame) / 100))
 
-        # Calc Step Length
-        a = float(lts_source[0][0]) - float(rts_source[0][0])
-        lsteplength = abs(a / 1000)
-        b = int(levent.tot_frames) - 1
-        c = float(lts_source[0][b])
-        a = float(rts_source[0][0]) - c
-        rsteplength = abs(a / 1000)
+        if len(lts_source) > 0:
+            # Calc Step Length
+            a = float(lts_source[0][0]) - float(rts_source[0][0])
+            lsteplength = abs(a / 1000)
+            b = int(levent.tot_frames) - 1
+            c = float(lts_source[0][b])
+            a = float(rts_source[0][0]) - c
+            rsteplength = abs(a / 1000)
 
-        # Calc Step Width
-        a = float(float(lts_source[1][0]) - float(rts_source[1][0]))
-        rstepwidth = abs(a / 1000)
-        b = int(levent.tot_frames) - 1
-        c = float(lts_source[1][b])
-        a = c - float(rts_source[1][0])
-        lstepwidth = abs(a / 1000)
-
-
+            # Calc Step Width
+            a = float(float(lts_source[1][0]) - float(rts_source[1][0]))
+            rstepwidth = abs(a / 1000)
+            b = int(levent.tot_frames) - 1
+            c = float(lts_source[1][b])
+            a = c - float(rts_source[1][0])
+            lstepwidth = abs(a / 1000)
+        else:
+            lsteplength  = 0
+            rsteplength = 0
+            rstepwidth= 0
+            lstepwidth = 0
 
 
     if lgc == rgc:

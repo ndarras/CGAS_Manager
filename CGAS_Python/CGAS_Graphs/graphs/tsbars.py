@@ -226,10 +226,10 @@ class tsBarsData:
         self.stancepcnt_stats[0, 1] = self.ref_lines[0][1][0]
         self.stancepcnt_stats[1, 0] = self.mean(self.stancepcnt[1:])
         self.stancepcnt_stats[1, 1] = self.stdev(self.stancepcnt[1:])
-        self.stancepcnt_stats[2, 0] = self.mean(self.stancepcntl[1:])
-        self.stancepcnt_stats[2, 1] = self.stdev(self.stancepcntl[1:])
-        self.stancepcnt_stats[3, 0] = self.mean(self.stancepcntr[1:])
-        self.stancepcnt_stats[3, 1] = self.stdev(self.stancepcntr[1:])
+        self.stancepcnt_stats[2, 0] = self.mean(self.stancepcntl[0:])
+        self.stancepcnt_stats[2, 1] = self.stdev(self.stancepcntl[0:])
+        self.stancepcnt_stats[3, 0] = self.mean(self.stancepcntr[0:])
+        self.stancepcnt_stats[3, 1] = self.stdev(self.stancepcntr[0:])
 
         outfile = open('sysdata//Reference_' + self.graph_type + '_TS_AVG.p', 'wb')
         pickle.dump(self.cadence_stats, outfile)

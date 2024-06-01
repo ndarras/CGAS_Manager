@@ -282,7 +282,26 @@ g = getemgparams()
 i = 0
 k = 0
 
-channel_offset = 12
+
+if os.path.isfile("EMG_Template.ini"):
+    f = open("EMG_Template.ini", "r")
+    if f.mode == 'r':
+        fl = f.readlines()
+        preprow = []
+        co = ''
+        fields = fl[0].split(',')
+        channel_offset = int(fields[1].strip('"'))
+        frq_factor = int(fields[2].strip("\n").strip('"'))
+else:
+    #====================================
+    #channel_offset = 12
+    channel_offset = 12 #uncomment for Vicon Analysis
+    frq_factor = 10 #uncomment for Vicon Analysis
+    #channel_offset = 0 #uncomment for GaitRite Analysis
+    #frq_factor = 2 #uncomment for GaitRite Analysis
+    #======================================
+
+
 ncols = g[0].columns
 nrows = g[0].rows
 channel_no = ncols * nrows
@@ -313,15 +332,15 @@ else:
 
 for k in range(events):
     if k <= len(levent_list) - 1:
-        lstart = levent_list[k].ic_frame * 10
-        lswing = levent_list[k].ts_frame * 10
-        lend = levent_list[k].sc_frame * 10
-        ldswing = levent_list[k].ts_frame * 10 - lstart
+        lstart = levent_list[k].ic_frame * frq_factor
+        lswing = levent_list[k].ts_frame * frq_factor
+        lend = levent_list[k].sc_frame * frq_factor
+        ldswing = levent_list[k].ts_frame * frq_factor - lstart
     if k <= len(revent_list) - 1:
-        rstart = revent_list[k].ic_frame * 10
-        rswing = revent_list[k].ts_frame * 10
-        rend = revent_list[k].sc_frame * 10
-        rdswing = revent_list[k].ts_frame * 10 - rstart
+        rstart = revent_list[k].ic_frame * frq_factor
+        rswing = revent_list[k].ts_frame * frq_factor
+        rend = revent_list[k].sc_frame * frq_factor
+        rdswing = revent_list[k].ts_frame * frq_factor - rstart
 
     fig, axes = plt.subplots(nrows=nrows, ncols=ncols, figsize=(8, 8))
     fig.canvas.mpl_connect('button_press_event', on_click)
@@ -564,7 +583,10 @@ for k in range(events):
     form1 = Canvas(root, width=300, height=300)
     form1.pack()
     if use_refs == "OK":
-        answer = tkinter.messagebox.askyesno("Graphs Storage", "Do you want to save this Gait Cycle?")
+        answer = tkinter.messagebox.askyesnocancel("Graphs Storage", "Do you want to save this Gait Cycle?")
+        if (answer == None):
+            root.destroy()
+            exit()
         if (answer == True):
             selected_graphs = []
             reference_graphs = []

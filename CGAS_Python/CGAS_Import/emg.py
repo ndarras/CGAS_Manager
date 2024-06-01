@@ -235,23 +235,42 @@ l_gait_cycles=len(levent_list)
 revent_list = prep.get_gait_cycles(acq, "Right", ts_event_list, fs_event_list)
 r_gait_cycles=len(revent_list)
 
+if os.path.isfile("EMG_Template.ini"):
+    f = open("EMG_Template.ini", "r")
+    if f.mode == 'r':
+        fl = f.readlines()
+        preprow = []
+        co = ''
+        fields = fl[0].split(',')
+        channel_offset = int(fields[1].strip('"'))
+        frq_factor = int(fields[2].strip("\n").strip('"'))
 
-lstart = levent_list[0].ic_frame * 10
-lswing = levent_list[0].ts_frame * 10
-lend = levent_list[0].sc_frame * 10
-ldswing = levent_list[0].ts_frame * 10 - lstart
+else:
+    channel_offset = 12 #uncomment for Vicon Analysis
+    frq_factor = 10 #uncomment for Vicon Analysis
+    #channel_offset = 0 #uncomment for GaitRite Analysis
+    #frq_factor = 2 #uncomment for GaitRite Analysis
 
-rstart = revent_list[0].ic_frame * 10
-rswing = revent_list[0].ts_frame * 10
-rend = revent_list[0].sc_frame * 10
-rdswing = revent_list[0].ts_frame * 10 - rstart
+
+lstart = int(levent_list[0].ic_frame * frq_factor)
+lswing = int(levent_list[0].ts_frame * frq_factor)
+lend = int(levent_list[0].sc_frame * frq_factor)
+ldswing = int(levent_list[0].ts_frame * frq_factor - lstart)
+
+rstart = int(revent_list[0].ic_frame * frq_factor)
+rswing = int(revent_list[0].ts_frame * frq_factor)
+rend = int(revent_list[0].sc_frame * frq_factor)
+rdswing = int(revent_list[0].ts_frame * frq_factor - rstart)
+
 
 g = getemgparams()
 
 i = 0
 k = 0
 
-channel_offset = 12
+
+
+
 ncols = g[0].columns
 nrows = g[0].rows
 channel_no = ncols * nrows
@@ -369,10 +388,10 @@ for i in range(0, len(g[0].emggraphs)):
 for i in range(0, len(g[0].emggraphs)):
     for k in range(0, l_gait_cycles):
         if g[0].emggraphs[i].context == "Left":
-            lstart = levent_list[k].ic_frame * 10
-            lswing = levent_list[k].ts_frame * 10
-            lend = levent_list[k].sc_frame * 10
-            ldswing = levent_list[k].ts_frame * 10 - lstart
+            lstart = levent_list[k].ic_frame * frq_factor
+            lswing = levent_list[k].ts_frame * frq_factor
+            lend = levent_list[k].sc_frame * frq_factor
+            ldswing = levent_list[k].ts_frame * frq_factor - lstart
             if ncols > 1:
                 axes[g[0].emggraphs[i].grow][g[0].emggraphs[i].gcol].add_patch(
                     patches.Rectangle((lstart, -100), ldswing, 200, edgecolor='black', facecolor='pink', fill=True,
@@ -392,10 +411,10 @@ for i in range(0, len(g[0].emggraphs)):
 
     for k in range(0, r_gait_cycles):
         if g[0].emggraphs[i].context == "Right":
-            rstart = revent_list[k].ic_frame * 10
-            rswing = revent_list[k].ts_frame * 10
-            rend = revent_list[k].sc_frame * 10
-            rdswing = revent_list[k].ts_frame * 10 - rstart
+            rstart = revent_list[k].ic_frame * frq_factor
+            rswing = revent_list[k].ts_frame * frq_factor
+            rend = revent_list[k].sc_frame * frq_factor
+            rdswing = revent_list[k].ts_frame * frq_factor - rstart
             if ncols > 1:
                 axes[g[0].emggraphs[i].grow][g[0].emggraphs[i].gcol].add_patch(
                     patches.Rectangle((rstart, -100), rdswing, 200, edgecolor='black', facecolor='cyan', fill=True,
@@ -428,15 +447,15 @@ else:
 
 for k in range(events):
     if k <= len(levent_list) - 1:
-        lstart = levent_list[k].ic_frame * 10
-        lswing = levent_list[k].ts_frame * 10
-        lend = levent_list[k].sc_frame * 10
-        ldswing = levent_list[k].ts_frame * 10 - lstart
+        lstart = int(levent_list[k].ic_frame * frq_factor)
+        lswing = int(levent_list[k].ts_frame * frq_factor)
+        lend = int(levent_list[k].sc_frame * frq_factor)
+        ldswing = int(levent_list[k].ts_frame * frq_factor - lstart)
     if k <= len(revent_list) - 1:
-        rstart = revent_list[k].ic_frame * 10
-        rswing = revent_list[k].ts_frame * 10
-        rend = revent_list[k].sc_frame * 10
-        rdswing = revent_list[k].ts_frame * 10 - rstart
+        rstart = int(revent_list[k].ic_frame * frq_factor)
+        rswing = int(revent_list[k].ts_frame * frq_factor)
+        rend = int(revent_list[k].sc_frame * frq_factor)
+        rdswing = int(revent_list[k].ts_frame * frq_factor - rstart)
 
     if ncols > 1:
         fig, axes = plt.subplots(nrows=nrows, ncols=ncols, squeeze=False, figsize=(8, 8))
@@ -574,8 +593,8 @@ for k in range(events):
                 axes[i].set_ylim(-100, 100)
 
     fig.canvas.manager.set_window_title('EMG_Gait_Cycle_' + str(k+1))
-    fig.suptitle(emgfilename  +'EMG_Gait_Cycle_' + str(k+1), y=0.02, fontsize=8, color='gray')
-    plt.savefig(working_dir + "_GRAPH_DATA//_Current_EMG//_EMG_Gait_Cycle_" + str(k+1) + ".png")
+    fig.suptitle(emgfilename  +'EMG_Gait_Cycle_nN_' + str(k+1), y=0.02, fontsize=8, color='gray')
+    plt.savefig(working_dir + "_GRAPH_DATA//_Current_EMG//_EMG_Gait_Cycle_nN_" + str(k+1) + ".png")
     plt.figure
 
 plt.show()

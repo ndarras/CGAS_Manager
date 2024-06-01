@@ -3,6 +3,7 @@ import sys
 import logging
 import filefunctions as ff
 from graphs import motiongraph as mg
+from graphs import angletoangle as a2a
 from graphs import adplot as ad
 from graphs import gps
 from graphs import arom as ar
@@ -50,12 +51,16 @@ if 'AverageTemporospatial' in Graph_List:
     a = ts.tsBarsData(Graph_Type, Graph_Name, all_graphs)
     a.plotavgtsbars()
 
+if 'Angle to Angle' in Graph_List:
+    a = a2a.atoa(Graph_Type, Graph_Name, all_graphs)
+    a.plotatoa()
 
-
-#ADPlot Graph
-b = ad.ADplotData(Graph_Type, Graph_Name, all_graphs)
-
-b.all_graphs = all_graphs
+try:
+    #ADPlot Graph
+    b = ad.ADplotData(Graph_Type, Graph_Name, all_graphs)
+    b.all_graphs = all_graphs
+except:
+    logging.info("ADPlot data cannot be initialised")
 
 if 'Motion Analysis Graphs + Indexes' in Graph_List:
     b.plotgraphsplusindexes()
@@ -94,8 +99,12 @@ c = gps.GPSData(Graph_Type, Graph_Name, all_graphs)
 if 'MAP and GVS' in Graph_List:
     c.map_bars()
 
-d = ar.AROMData(Graph_Type, Graph_Name, all_graphs)
-d.calcromdata()
+try:
+    d = ar.AROMData(Graph_Type, Graph_Name, all_graphs)
+    d.calcromdata()
+except:
+    logging.info("ARom data cannot be initialised")
+
 if 'Range Of Motion' in Graph_List:
     d.plotrom()
 

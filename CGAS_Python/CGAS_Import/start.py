@@ -23,6 +23,13 @@ class UserSelection:
     def __init__(self, selection):
         self.selection = selection
 
+def msgbox(msg):
+    window = tkinter.Tk()
+    window.wm_withdraw()
+    tkinter.messagebox.showinfo(title="CGAS Python Script", message=msg)
+    window.destroy()
+    return None
+
 
 def get_user_response(user_responce):
     ws = Tk()
@@ -178,9 +185,13 @@ if use_refs == "OK":
 
 # Read the Reference Graph Data
 if use_refs == "OK":
-    ref_names_df = pandas.read_csv('_REFERENCES/' + ReferenceName +'/ReferenceNames.ini', sep=',', quotechar='"', engine='python')
-    excel_data_df = pandas.read_excel('_REFERENCES/' + ReferenceName + '/' + ReferenceName + '.xlsx',
-                                     sheet_name=ReferenceName)
+    if os.path.isfile('_REFERENCES/' + ReferenceName +'/ReferenceNames.ini'):
+        ref_names_df = pandas.read_csv('_REFERENCES/' + ReferenceName +'/ReferenceNames.ini', sep=',', quotechar='"', engine='python')
+        excel_data_df = pandas.read_excel('_REFERENCES/' + ReferenceName + '/' + ReferenceName + '.xlsx',                                         sheet_name=ReferenceName)
+    else:
+        msgbox('Can not find reference data: ' + ReferenceName)
+        use_refs = "NOK"
+        # quit()
 
 # Start Graphing Data
 planes = 3
@@ -237,7 +248,7 @@ for gc in range(0, l_gait_cycles):
                     # axs[j, i].title.set_text(ref_graph_name)
                     axs[j, i].set_title(ref_graph_name,  fontsize=8)
             else:
-                axs[j, i].title.set_title(gtitle + " (" + plane_name[i] + ")", fontsize=8)
+                axs[j, i].set_title(gtitle + " (" + plane_name[j] + ")", fontsize=8)
 
 
 
@@ -258,7 +269,10 @@ for gc in range(0, l_gait_cycles):
     form1 = Canvas(root, width=300, height=300)
     form1.pack()
     if use_refs == "OK":
-        answer = tkinter.messagebox.askyesno("Graphs Storage", "Do you want to save this Gait Cycle?")
+        answer = tkinter.messagebox.askyesnocancel("Graphs Storage", "Do you want to save this Gait Cycle?")
+        if (answer == None):
+            root.destroy()
+            exit()
         if (answer == True):
             if c3did != "":
                 proc.save_event_data(working_dir, userid, c3did, levent_list)
@@ -308,7 +322,7 @@ for gc in range(0, r_gait_cycles):
                     # axs[j, i].title.set_text(ref_graph_name)
                     axs[j, i].set_title(ref_graph_name,  fontsize=8)
             else:
-                axs[j, i].title.set_title(gtitle + " (" + plane_name[i] +")", fontsize=8)
+                axs[j, i].set_title(gtitle + " (" + plane_name[j] +")", fontsize=8)
 
 
     fig.suptitle("Right Gait Cycle {} of {}".format(gc, r_gait_cycles))
@@ -320,7 +334,10 @@ for gc in range(0, r_gait_cycles):
     form1 = Canvas(root, width=300, height=300)
     form1.pack()
     if use_refs == "OK":
-        answer = tkinter.messagebox.askyesno("Graphs Storage", "Do you want to save this Gait Cycle?")
+        answer = tkinter.messagebox.askyesnocancel("Graphs Storage", "Do you want to save this Gait Cycle?")
+        if (answer == None):
+            root.destroy()
+            exit()
         if (answer == True):
             if c3did != "":
                 proc.save_event_data(working_dir, userid, c3did, revent_list)
