@@ -32,6 +32,8 @@ Clinical Gait Analysis Manager: Freeware application to store, process, and pres
 
 **Requirements**
 
+Microsoft windows 10 or later
+
 MySQL server version 5.7 or later
 
 MySQL ODBC Version 5.2.7
