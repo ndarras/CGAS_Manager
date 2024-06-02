@@ -7,7 +7,7 @@ Application Key Features
 1. Simple navigation menu
 2.C3D Spatiotemporal, Kinematic, Kinetic, EMG, and Metadata extraction
 3. Parametric Lab C3D data import settings
-4.C3D files are copied and stored in the Database
+4. C3D files are copied and stored in the Database
 5. Easy Export and Import data for a Subject or a Group of Subjects
 6. Easy Group assignment for each C3D file
 7. Each C3D file can be assigned to multiple Groups
