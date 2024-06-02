@@ -1,6 +1,7 @@
 # CGAS_Manager
 
-![alt text](https://github.com/ndarras/CGAS_Manager/blob/main/CGAS_Apps/SDG_logo.png Logo)
+![SDG_logo](https://github.com/ndarras/CGAS_Manager/assets/13803135/e5b6d42f-76f9-4db8-a3a7-d219dd5107ce)
+
 
 A freeware application to store, process, and present Gait Analysis data.
 
