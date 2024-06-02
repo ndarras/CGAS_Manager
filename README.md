@@ -2,7 +2,7 @@
  
 A freeware application to store, process, and present Gait Analysis data.
 
-Application Key Features
+**Application Key Features**
 
 1. Simple navigation menu
 2. C3D Spatiotemporal, Kinematic, Kinetic, EMG, and Metadata extraction
