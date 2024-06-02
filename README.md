@@ -45,3 +45,10 @@ Miniconda Version 3.0 with Python 3.8
 Moka Version 0.6
 
 PyCharm Community Edition
+
+
+
+
+**Please refer to the following link for the installation procedure: **  
+
+https://sites.google.com/view/cgasmanager/download
