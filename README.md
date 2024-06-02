@@ -33,8 +33,13 @@ Clinical Gait Analysis Manager: Freeware application to store, process, and pres
 **Requirements**
 
 MySQL server version 5.7 or later
+
 MySQL ODBC Version 5.2.7
+
 MSAccess Full Version or Runtime
+
 Miniconda Version 3.0 with Python 3.8    
+
 Moka Version 0.6
+
 PyCharm Community Edition
