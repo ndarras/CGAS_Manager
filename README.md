@@ -5,7 +5,7 @@ A freeware application to store, process, and present Gait Analysis data.
 Application Key Features
 
 1. Simple navigation menu
-2.C3D Spatiotemporal, Kinematic, Kinetic, EMG, and Metadata extraction
+2. C3D Spatiotemporal, Kinematic, Kinetic, EMG, and Metadata extraction
 3. Parametric Lab C3D data import settings
 4. C3D files are copied and stored in the Database
 5. Easy Export and Import data for a Subject or a Group of Subjects
@@ -30,7 +30,8 @@ Application Key Features
 
 Clinical Gait Analysis Manager: Freeware application to store, process, and present Gait Analysis data. Available from: https://www.researchgate.net/publication/373904464_Clinical_Gait_Analysis_Manager_Freeware_application_to_store_process_and_present_Gait_Analysis_data [accessed Jun 02 2024].
 
-Requirements
+**Requirements**
+
 MySQL server version 5.7 or later
 MySQL ODBC Version 5.2.7
 MSAccess Full Version or Runtime
